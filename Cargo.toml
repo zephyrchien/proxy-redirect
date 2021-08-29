@@ -6,6 +6,8 @@ authors = ["zephyr <i@zephyr.moe>"]
 license = "MIT"
 
 [dependencies]
+log = "0.4"
+env_logger = "0.9"
 regex = "1.5"
 futures = "0.3"
 tokio = { version = "1.10", features = ["rt", "net", "io-util"] }

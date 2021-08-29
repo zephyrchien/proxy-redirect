@@ -2,6 +2,7 @@ use std::sync::Arc;
 use std::io::{Result, Error, ErrorKind};
 use futures::try_join;
 
+use log::{warn, info};
 use tokio::io::{AsyncWriteExt, copy};
 use tokio::net::{TcpStream, TcpListener};
 
@@ -12,8 +13,15 @@ pub async fn run(conf: Arc<Config>) {
     let lis = TcpListener::bind(conf.listen.clone()).await.unwrap();
     loop {
         if let Ok((src, _)) = lis.accept().await {
-            tokio::spawn(choose_dst(src, conf.clone()));
+            tokio::spawn(handle(src, conf.clone()));
         }
+    }
+}
+
+async fn handle(src: TcpStream, conf: Arc<Config>) {
+    match choose_dst(src, conf).await {
+        Ok(_) => {}
+        Err(e) => warn!("{}", e),
     }
 }
 
@@ -24,15 +32,15 @@ async fn choose_dst(src: TcpStream, conf: Arc<Config>) -> Result<()> {
         return Err(Error::new(ErrorKind::UnexpectedEof, "eof"));
     }
 
-    let dst_addr = if rules::is_socks5(&buf) {
-        conf.socks5.to_string()
+    let (proto, dst_addr) = if rules::is_socks5(&buf) {
+        ("socks5", conf.socks5.to_string())
     } else if rules::is_http(&buf) {
-        conf.http.to_string()
+        ("http", conf.http.to_string())
     } else {
-        conf.default.to_string()
+        ("default", conf.default.to_string())
     };
+    info!("[{}]{}", proto, &dst_addr);
     let dst = TcpStream::connect(dst_addr).await?;
-
     relay(src, dst).await
 }
 

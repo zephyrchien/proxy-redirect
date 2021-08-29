@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::fmt::{Formatter, Display};
 
 #[derive(Debug, Default)]
 pub struct Config {
@@ -8,6 +9,19 @@ pub struct Config {
     pub socks5: String,
     pub http: String,
     pub default: String,
+}
+
+impl Display for Config {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}\n{}\n{}\n{}",
+            format!("{:<16}tcp://{}", "listen", self.listen),
+            format!("{:<16}http://{}", "http", self.http),
+            format!("{:<16}socks5://{}", "socks5", self.socks5),
+            format!("{:<16}tcp://{}", "default", self.default),
+        )
+    }
 }
 
 impl Config {

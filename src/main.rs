@@ -19,8 +19,16 @@ fn load_conf() -> Config {
 }
 
 fn main() {
-    let conf = load_conf();
+    // init logger
+    env_logger::init();
 
+    // load config
+    log::warn!("load config");
+    let conf = load_conf();
+    eprintln!("{}", &conf);
+
+    // build scheduler and run
+    log::warn!("service start");
     tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()
