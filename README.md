@@ -12,7 +12,7 @@
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]: https://github.com/zephyrchien/proxy-redirect/blob/master/LICENSE
 
-This tiny tool binds to a specific port and redirects traffics to other different ports, make it possible to support multiple protocols on one port.
+This tiny tool listen on a specific port and redirects traffics to other different ports, making it possible to support multiple protocols on one port.
 
 ## Usage
 ```shell
