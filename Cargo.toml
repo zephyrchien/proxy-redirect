@@ -1,0 +1,11 @@
+[package]
+name = "redirect"
+edition = "2018"
+version = "0.1.0"
+authors = ["zephyr <i@zephyr.moe>"]
+license = "MIT"
+
+[dependencies]
+regex = "1.5"
+futures = "0.3"
+tokio = { version = "1.10", features = ["rt", "net", "io-util"] }
