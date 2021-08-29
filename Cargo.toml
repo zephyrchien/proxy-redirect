@@ -1,7 +1,7 @@
 [package]
 name = "redirect"
 edition = "2018"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["zephyr <i@zephyr.moe>"]
 license = "MIT"
 
